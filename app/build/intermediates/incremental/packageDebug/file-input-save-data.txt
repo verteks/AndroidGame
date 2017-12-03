@@ -1,0 +1,27 @@
+#Internal package file, do not edit.
+#Sun Dec 03 21:21:41 IRKT 2017
+2.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_
+5.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-xhdpi-v4\\ic_launcher.png
+5.set=ANDROID_RESOURCE
+3.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_
+6.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_\\resources.arsc
+2.set=ANDROID_RESOURCE
+4.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_
+7.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\menu\\menu.xml
+7.set=ANDROID_RESOURCE
+count=8
+0.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_\\AndroidManifest.xml
+5.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_
+4.set=ANDROID_RESOURCE
+6.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_
+1.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex
+1.set=DEX
+7.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_
+2.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\raw\\bubble_pop.wav
+6.set=ANDROID_RESOURCE
+0.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_
+3.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-nodpi-v4\\b64.png
+3.set=ANDROID_RESOURCE
+1.base=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
+4.file=C\:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\layout\\main.xml
+0.set=ANDROID_RESOURCE
