@@ -7,8 +7,8 @@
                     "startLine": 2,
                     "startColumn": 4,
                     "startOffset": 55,
-                    "endColumn": 48,
-                    "endOffset": 99
+                    "endColumn": 46,
+                    "endOffset": 97
                 },
                 "from": {
                     "file": "C:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\src\\main\\res\\values\\strings.xml",
@@ -16,8 +16,8 @@
                         "startLine": 2,
                         "startColumn": 4,
                         "startOffset": 55,
-                        "endColumn": 48,
-                        "endOffset": 99
+                        "endColumn": 46,
+                        "endOffset": 97
                     }
                 }
             },
@@ -25,18 +25,18 @@
                 "to": {
                     "startLine": 3,
                     "startColumn": 4,
-                    "startOffset": 104,
+                    "startOffset": 102,
                     "endColumn": 44,
-                    "endOffset": 144
+                    "endOffset": 142
                 },
                 "from": {
                     "file": "C:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,
-                        "startOffset": 303,
+                        "startOffset": 301,
                         "endColumn": 44,
-                        "endOffset": 343
+                        "endOffset": 341
                     }
                 }
             },
@@ -44,18 +44,18 @@
                 "to": {
                     "startLine": 4,
                     "startColumn": 4,
-                    "startOffset": 149,
+                    "startOffset": 147,
                     "endColumn": 70,
-                    "endOffset": 215
+                    "endOffset": 213
                 },
                 "from": {
                     "file": "C:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
-                        "startOffset": 232,
+                        "startOffset": 230,
                         "endColumn": 70,
-                        "endOffset": 298
+                        "endOffset": 296
                     }
                 }
             },
@@ -63,18 +63,18 @@
                 "to": {
                     "startLine": 5,
                     "startColumn": 4,
-                    "startOffset": 220,
+                    "startOffset": 218,
                     "endColumn": 70,
-                    "endOffset": 286
+                    "endOffset": 284
                 },
                 "from": {
                     "file": "C:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
-                        "startOffset": 161,
+                        "startOffset": 159,
                         "endColumn": 70,
-                        "endOffset": 227
+                        "endOffset": 225
                     }
                 }
             },
@@ -82,18 +82,18 @@
                 "to": {
                     "startLine": 6,
                     "startColumn": 4,
-                    "startOffset": 291,
+                    "startOffset": 289,
                     "endColumn": 56,
-                    "endOffset": 343
+                    "endOffset": 341
                 },
                 "from": {
                     "file": "C:\\Users\\vshir\\AndroidStudioProjects\\Game\\app\\src\\main\\res\\values\\strings.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
-                        "startOffset": 104,
+                        "startOffset": 102,
                         "endColumn": 56,
-                        "endOffset": 156
+                        "endOffset": 154
                     }
                 }
             }
