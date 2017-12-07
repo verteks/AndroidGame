@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class BonusBall extends View {
 
     private static final String TAG = "BonusBall";
-    private static final int SIZE = 70;
+    private static final int SIZE = 50;
     private static final int REFRESH_RATE = 40;
     private final Paint mPainter = new Paint();
     private ScheduledFuture<?> mMoverFuture;
@@ -43,6 +43,7 @@ public class BonusBall extends View {
         mXPos = x ;
         mYPos = y ;
 
+        mScaledBitmap = Bitmap.createScaledBitmap(Game.getmBitmapDrop(),(int)(0.8*SIZE),SIZE,true);
 //        rnd = new Random();
 //        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         mPainter.setColor(Color.GREEN);
@@ -55,8 +56,7 @@ public class BonusBall extends View {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         canvas.save();
-        canvas.drawCircle(mXPos,mYPos,mWidth,mPainter);
-
+        canvas.drawBitmap(mScaledBitmap,  mXPos - (mWidth),  mYPos - (mWidth ), mPainter);
         canvas.restore();
     }
 
@@ -68,6 +68,7 @@ public class BonusBall extends View {
 
         // Запускаем run() в Worker Thread каждые REFRESH_RATE милисекунд
         // Сохраняем ссылку на данный процесс в mMoverFuture
+
         mMoverFuture = executor.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
@@ -75,7 +76,7 @@ public class BonusBall extends View {
                 for (int i =0;i<mFrame.getChildCount();i++){
                     if (mFrame.getChildAt(i) instanceof Player){
                         Player player = (Player) mFrame.getChildAt(i);
-                        if (player.intersect(mXPos,mYPos,mWidth)){
+                        if (player.intersect(mXPos,mYPos,mWidth,true)){
                             stop();
                         }
                     }
@@ -122,5 +123,10 @@ public class BonusBall extends View {
 //
 //        }
 //    }
-
+public void pause()  {
+    mMoverFuture.cancel(true);
+};
+    public void resume()  {
+        start();
+    };
 }

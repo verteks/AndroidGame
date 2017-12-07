@@ -3,12 +3,10 @@ package course.labs.graphicslab;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,20 +20,24 @@ import java.util.concurrent.TimeUnit;
 public class Ball extends View {
 
     private static final String TAG = "Ball";
-    private static final int SIZE = 32;
+    private static final int SIZE = 48;
     private static final int REFRESH_RATE = 40;
     private final Paint mPainter = new Paint();
     private ScheduledFuture<?> mMoverFuture;
     private int mDy = 20;
     private int mDx = 0;
-    private int mDwidth = 0;
+    private float mDwidth = 0;
+    private float delta = 1;
     private Bitmap mScaledBitmap;
     private boolean terminatorMod = false;
+    private long mRotate;
+    private long mDRotate=3;
 
     private RelativeLayout mFrame;
  private Random rnd ;
     // местоположение, скорость и направление пузыря
-    private float mXPos, mYPos, mWidth;
+    private float mXPos, mYPos;
+    float mWidth;
 
     Ball(Context context, float x, float y, RelativeLayout mFrame, boolean boost1T, boolean boost2T, boolean boost3T) {
         super(context);
@@ -43,20 +45,24 @@ public class Ball extends View {
         this.mFrame=mFrame;
         // Радиус Bitmap
         mWidth = SIZE / 2;
+        delta=mWidth;
         // Центрируем положение игрока относительно точки касания пальца пользователя
         mXPos = x ;
         mYPos = y ;
 
 //        rnd = new Random();
 //        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        mPainter.setColor(Color.RED);
+        //mPainter.setColor(Color.RED);
+
+        mScaledBitmap = Bitmap.createScaledBitmap(Game.getmBitmapFireBall(),SIZE,SIZE,true);
+
         if (boost1T){
-            mDwidth = 1;
+            mDwidth = (float) 0.5;
         }
         if (boost2T) {
             terminatorMod=true;
         }
-        if (boost3T ) {
+        if ((boost3T))  {
             createRBall(boost1T,boost2T);
         }
 
@@ -82,7 +88,7 @@ public class Ball extends View {
     private void setDx(int dx){
         this.mDx=dx;
     }
-    public static List<Ball> getAll(){
+    public static int getAll(){
         return getAll();
     }
     private void delete(){
@@ -91,9 +97,24 @@ public class Ball extends View {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         canvas.save();
-        canvas.drawCircle(mXPos,mYPos,mWidth,mPainter);
+        mRotate +=mDRotate;
+        canvas.rotate((float) mRotate, mXPos , mYPos );
+        if (mDwidth>0){
+            canvas.translate(mXPos ,mYPos);
 
+
+
+            float deltaFloat = (float) ((float)mWidth/delta);
+            canvas.scale(deltaFloat,deltaFloat);
+
+
+
+            canvas.drawBitmap(mScaledBitmap,   - (delta),  - (delta), mPainter);
+        }else{
+            canvas.drawBitmap(mScaledBitmap,  mXPos - (mWidth),  mYPos - (mWidth ), mPainter);
+        }
         canvas.restore();
+
     }
 
     private void start() {
@@ -104,6 +125,7 @@ public class Ball extends View {
 
         // Запускаем run() в Worker Thread каждые REFRESH_RATE милисекунд
         // Сохраняем ссылку на данный процесс в mMoverFuture
+
         mMoverFuture = executor.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
@@ -111,6 +133,7 @@ public class Ball extends View {
                 if (mYPos>0) {
                     mYPos-=mDy;
                     mWidth+=mDwidth;
+
                     doDx();
                 }else {
                     stop();
@@ -122,11 +145,14 @@ public class Ball extends View {
         }, 0, REFRESH_RATE, TimeUnit.MILLISECONDS);
     }
 private void doDx(){
-    if (mXPos-mWidth<0){mDx*=-1;}
-    if (mXPos+mWidth>mFrame.getWidth()){mDx*=-1;}
+    if ((mXPos-mWidth<=0) && (mDx<0)){mDx*=-1;}
+    if ((mXPos+mWidth>=mFrame.getWidth())&& (mDx>0)){mDx*=-1;}
     mXPos+=mDx;
+
 }
+
     private void stop() {
+
 
         if (null != mMoverFuture && !mMoverFuture.isDone()) {
             mMoverFuture.cancel(true);
@@ -153,6 +179,15 @@ private void doDx(){
         }}else{
                 return false;}
     }
+
+    public void pause()  {
+        mMoverFuture.cancel(true);
+    };
+    public void resume()  {
+        start();
+    };
+
+
 
 
 }

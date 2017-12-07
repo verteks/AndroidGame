@@ -6,11 +6,13 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class Game extends Activity {
 
@@ -20,10 +22,16 @@ public class Game extends Activity {
 	private final static int STILL = 2;
 	private static int speedMode = RANDOM;
 
+	private static int incrementa=0;
+
 	private static final String TAG = "Game";
+	public static Bitmap mBitmapFireBall;
+	public static Bitmap mBitmapSnowFlake;
+	public static Bitmap mBitmapDrop;
 
 	// Главный view
 	private RelativeLayout mFrame;
+	public static TextView textViewBonus;
 
 	// Bitmap изображения пузыря
 	private Bitmap mBitmap;
@@ -43,13 +51,24 @@ public class Game extends Activity {
 	private float mStreamVolume;
 
 	private boolean gameCreated = false;
+	private boolean wasPaussed = false;
 
 	// Детектор жестов
 	private GestureDetector mGestureDetector;
 	private Player player;
 	private Boss boss;
 
+	public static Bitmap getmBitmapFireBall() {
+		return mBitmapFireBall;
+	}
 
+	public static Bitmap getmBitmapSnowFlake() {
+		return mBitmapSnowFlake;
+	}
+
+	public static Bitmap getmBitmapDrop() {
+		return mBitmapDrop;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,17 +78,21 @@ public class Game extends Activity {
 
 		// Установка пользовательского интерфейса
 		mFrame = (RelativeLayout) findViewById(R.id.frame);
+		textViewBonus =(TextView) findViewById(R.id.textViewBonus);
+
 
 		// Загружаем базовое изображение для пузыря
-		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.b64);
-
-
-
+		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.persik1);
+		mBitmapFireBall = BitmapFactory.decodeResource(getResources(), R.drawable.fireball64);
+		mBitmapSnowFlake = BitmapFactory.decodeResource(getResources(), R.drawable.snowflake);
+		mBitmapDrop = BitmapFactory.decodeResource(getResources(), R.drawable.drop);
 	}
 
 	private void createNewGame(){
-		if (player!=null){player.kill();}
-		if (boss!=null){boss.kill();}
+		if (player!=null){player.kill();
+			Log.d(TAG,"player dead");}
+		if (boss!=null){boss.kill();
+		Log.d(TAG,"boss dead");}
 		mFrame.removeAllViews();
 		player = new Player(mFrame.getContext(),mDisplayWidth/2, (float) (0.95)*mDisplayHeight,mFrame,mBitmap,leftBordder,rightBorder);
 		player.setGoTO(mDisplayWidth/2);
@@ -82,6 +105,29 @@ public class Game extends Activity {
 
 	@Override
 	protected void onResume() {
+		Log.d(TAG,"was resumed");
+
+		if ((gameCreated)&&(wasPaussed)) {
+			for (int i = 0; i < mFrame.getChildCount(); i++) {
+				if (mFrame.getChildAt(i) instanceof Ball) {
+					((Ball) mFrame.getChildAt(i)).resume();
+				}
+				if (mFrame.getChildAt(i) instanceof BossBall) {
+					((BossBall) mFrame.getChildAt(i)).resume();
+				}
+				if (mFrame.getChildAt(i) instanceof BonusBall) {
+					((BonusBall) mFrame.getChildAt(i)).resume();
+				}
+				if (mFrame.getChildAt(i) instanceof Player) {
+					((Player) mFrame.getChildAt(i)).resume();
+				}
+				if (mFrame.getChildAt(i) instanceof Boss) {
+					((Boss) mFrame.getChildAt(i)).resume();
+				}
+
+			}
+		}
+		wasPaussed=false;
 		super.onResume();
 		setupGestureDetector();
 	}
@@ -100,6 +146,9 @@ public class Game extends Activity {
 			rightBorder= mDisplayWidth-(float) (0.05*mDisplayWidth);
 			if (!gameCreated){
 				createNewGame();
+
+			}else {
+				onResume();
 			}
 
 }
@@ -131,6 +180,17 @@ public class Game extends Activity {
 
 	@Override
 	protected void onPause() {
+		Log.d(TAG,"was paused");
+		wasPaussed=true;
+
+		for (int i =0;i<mFrame.getChildCount();i++){
+			if (mFrame.getChildAt(i) instanceof Ball){((Ball) mFrame.getChildAt(i)).pause();}
+			if (mFrame.getChildAt(i) instanceof BossBall){((BossBall) mFrame.getChildAt(i)).pause();}
+			if (mFrame.getChildAt(i) instanceof BonusBall){((BonusBall) mFrame.getChildAt(i)).pause();}
+			if (mFrame.getChildAt(i) instanceof Player){((Player) mFrame.getChildAt(i)).pause();}
+			if (mFrame.getChildAt(i) instanceof Boss){((Boss) mFrame.getChildAt(i)).pause();}
+
+		}
 		super.onPause();
 	}
 
@@ -145,6 +205,7 @@ public class Game extends Activity {
 
 	@Override
 	public void onBackPressed() {
+		onPause();
 		openOptionsMenu();
 	}
 
@@ -161,7 +222,7 @@ public class Game extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_still_mode:
-				createNewGame();
+				gameCreated=false;
 				return true;
 			case R.id.menu_single_speed:
 				speedMode = SINGLE;
@@ -179,6 +240,15 @@ public class Game extends Activity {
 
 	private void exitRequested() {
 		super.onBackPressed();
+
+	}
+
+	public static void incrementa(boolean add){
+		if (add){
+		incrementa++;}
+		else{incrementa--;}
+		Log.d("incrementa",""+incrementa);
+
 	}
 
 

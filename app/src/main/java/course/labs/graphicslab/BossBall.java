@@ -3,7 +3,6 @@ package course.labs.graphicslab;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -32,6 +31,8 @@ public class BossBall extends View {
     private Random rnd ;
     // местоположение, скорость и направление пузыря
     private float mXPos, mYPos, mWidth;
+    private long mRotate;
+    private long mDRotate=-3;
 
     BossBall(Context context, float x, float y,RelativeLayout mFrame) {
         super(context);
@@ -45,7 +46,9 @@ public class BossBall extends View {
 
 //        rnd = new Random();
 //        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        mPainter.setColor(Color.BLUE);
+       // mPainter.setColor(Color.BLUE);
+
+        mScaledBitmap = Bitmap.createScaledBitmap(Game.getmBitmapSnowFlake(),SIZE,SIZE,true);
 
         this.start();
     }
@@ -55,9 +58,12 @@ public class BossBall extends View {
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         canvas.save();
-        canvas.drawCircle(mXPos,mYPos,mWidth,mPainter);
 
+        mRotate +=mDRotate;
+        canvas.rotate((float) mRotate, mXPos , mYPos );
+        canvas.drawBitmap(mScaledBitmap,  mXPos - (mWidth),  mYPos - (mWidth ), mPainter);
         canvas.restore();
+
     }
 
     private void start() {
@@ -86,6 +92,7 @@ public class BossBall extends View {
                         createBonusBall(mXPos,mYPos);
                         stop();
                     }
+
                     }
 
                 }
@@ -123,7 +130,12 @@ public class BossBall extends View {
             }
 
         }
-
+    public void pause()  {
+        mMoverFuture.cancel(true);
+    }
+    public void resume()  {
+        start();
+    }
 //    private void boom()
 //    {
 //        List<Ball> list = Ball.getAll();

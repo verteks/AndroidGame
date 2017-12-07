@@ -1,6 +1,7 @@
 package course.labs.graphicslab;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -16,8 +17,10 @@ public class Boss extends View {
     private static final int BITMAP_SIZE = 64;
     private static final int LIVE_RATE = 10000;
     private int attackRatee;
+    private int attackLiveRate;
     private int attackWaves;
     private int attackEnemy;
+    private int enemyPerWave;
     private ScheduledFuture<?> mMoverFuture;
     private ScheduledFuture<?> mAttackExecuter;
 
@@ -45,18 +48,28 @@ public class Boss extends View {
         mMoverFuture = executor.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
+            //mAttackExecuter.cancel(true);
             attackRatee=9000;
             attackEnemy = (int) (9+0.2*9*attackWaves);
+            enemyPerWave = attackEnemy/(attackRatee/1000);
+                if (enemyPerWave >4) {
+                    enemyPerWave = 4;
+                    attackLiveRate = (int) 9000/(attackEnemy/enemyPerWave);
 
+                }else{
+                    attackLiveRate=1000;
+                }
             attackWaves++;
             attack();
+                Log.d(TAG,"Ball "+attackLiveRate );
+                Log.d(TAG,"Ball ");
+                //Log.d(TAG,"bonusball "+BonusBall. );
 
             }
         }, 1000, LIVE_RATE, TimeUnit.MILLISECONDS);
 
     }
     private void attack() {
-         final int enemyPerWave = attackEnemy/(attackRatee/1000);
          //final int enemyPerWave = 1;
         final Random rnd = new Random();
         // Создаем WorkerThread
@@ -69,12 +82,14 @@ public class Boss extends View {
 
                     createBossBall(x,0);
                 }
-                attackRatee-=1000;
-                if (attackRatee==0){
-                    attackerExecutor.shutdown();
+                attackRatee-=attackLiveRate;
+                if (attackRatee < 100){
+                    mAttackExecuter.cancel(true);
+                    attackerExecutor.shutdownNow();
+
                 }
             }
-        }, 0,1000 , TimeUnit.MILLISECONDS);
+        }, 0,attackLiveRate , TimeUnit.MILLISECONDS);
 
     }
     public void kill(){
@@ -98,4 +113,11 @@ public class Boss extends View {
         });
 
     }
+    public void pause()  {
+        attackerExecutor.shutdownNow();
+        mMoverFuture.cancel(true);
+    };
+    public void resume()  {
+        live();
+    };
 }

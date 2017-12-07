@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -20,13 +21,13 @@ import java.util.concurrent.TimeUnit;
 public class Player extends View {
 
     private static final String TAG = "Player";
-    private static final int BITMAP_SIZE = 64;
+    private static final int BITMAP_SIZE = 128;
     private static final int REFRESH_RATE = 40;
     private final Paint mPainter = new Paint();
     private ScheduledFuture<?> mMoverFuture;
     private ScheduledFuture<?> mFireFuture;
     private int mScaledBitmapWidth;
-    private int mDx = 25;
+    private int mDx = 30;
     private int fireRate = 500;
     private Bitmap mScaledBitmap;
     // Bitmap изображения пузыря
@@ -121,6 +122,7 @@ public class Player extends View {
                 if (boost2>0){boost2--;boost2T=true;}
                 if (boost3>0){boost3--;boost3T=true;}
 
+
                 createBall(boost1T,boost2T,boost3T);
 
                 boost1T=boost2T=boost3T=false;
@@ -141,7 +143,8 @@ public class Player extends View {
 
    public void kill(){
        mMoverFuture.cancel(true);
-       executor1.shutdown();
+       mFireFuture.cancel(true);
+       executor1.shutdownNow();
        mFrame.post(new Runnable() {
            @Override
            public void run() {
@@ -178,7 +181,9 @@ public class Player extends View {
         return true;
     }
 
-    public boolean intersect(float x,float y, float radius){
+
+
+    public boolean intersect(float x, float y, float radius, boolean bonus){
         double a = Math.abs(x-mXPos);
         double b = Math.abs(y-mYPos);
         a=  Math.pow(a,2);
@@ -186,20 +191,46 @@ public class Player extends View {
         double c = Math.pow(a+b,0.5);
         double cc =radius+mWidth;
         if (c<cc){
+            if (bonus){
            int  random = rnd.nextInt(3)+1;
             if (random==1){
                 boost1+=10;
+                setTextBonus("ylalal");
             }
             if (random==2){
+                setTextBonus("ylalal");
                 boost2+=10;
             }
             if (random==3){
+                setTextBonus("ylalal");
                 boost3+=10;
+            }
             }
             return true;
         }else{
             return false;}
     }
 
+    public void pause()  {
+        mMoverFuture.cancel(true);
+        mFireFuture.cancel(true);
+        executor1.shutdownNow();
+    };
+    public void resume()  {
+        start();
+        fire();
+    };
 
+    private void setTextBonus(String text){
+        final TextView textView = Game.textViewBonus;
+        textView.setText(text);
+        textView.setCursorVisible(true);
+        mFrame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textView.setCursorVisible(false);
+            }
+        },2000);
+
+    }
 }
